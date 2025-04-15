@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",
-    "coverage": "vitest run --coverage",
+    "coverage": "vitest run --coverage --exclude src/e2e.test.js",
     "format": "prettier --write .",
     "e2e": "node src/e2e.test.js"
   },
