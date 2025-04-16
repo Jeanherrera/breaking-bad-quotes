@@ -8,7 +8,7 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "vitest",
+    "test": "vitest --exclude src/e2e.test.js",
     "coverage": "vitest run --coverage --exclude src/e2e.test.js",
     "format": "prettier --write .",
     "e2e": "node src/e2e.test.js"
