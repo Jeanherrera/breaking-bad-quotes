@@ -11,7 +11,8 @@
     "test": "vitest --exclude src/e2e.test.js",
     "coverage": "vitest run --coverage --exclude src/e2e.test.js",
     "format": "prettier --write .",
-    "e2e": "node src/e2e.test.js"
+    "e2e": "node src/e2e.test.js",
+    "smoke": "node src/smoke.test.js"
   },
   "dependencies": {
     "react": "^19.0.0",
