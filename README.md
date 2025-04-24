@@ -4,11 +4,11 @@ This web application displays random quotes from the TV show Breaking Bad. Users
 
 ## Features
 
-- Fetches and displays random Breaking Bad quotes using a public API
-- Shows the author of each quote
-- Button to get a new random quote
-- Responsive, modern UI with a dark theme
-- Fully tested with 100% code coverage for all app components
+- Fetches and displays random Breaking Bad quotes using a public API.
+- Shows the author of each quote.
+- Button to get a new random quote.
+- Responsive, modern UI with a dark theme.
+- Fully tested with 100% code coverage for all app components.
 
 ## Getting Started
 
