@@ -102,8 +102,8 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main' # Solo en push a main
     outputs:
       alb_url_staging: ${{ steps.get_stack_outputs.outputs.alb_url }}
-      cluster_name_staging: 'brbad-staging-cluster'
-      service_name_staging: 'brbad-staging-service'
+      cluster_name_staging: 'brkbad-staging-cluster'
+      service_name_staging: 'brkbad-staging-service'
 
     steps:
       # 1. Checkout del código (para acceder a template.yaml)
@@ -128,7 +128,7 @@ jobs:
 
           aws cloudformation deploy \
             --template-file template.yaml \
-            --stack-name brbad-staging-stack \
+            --stack-name brkbad-staging-stack \
             --parameter-overrides \
               EnvironmentName=staging \
               DockerImageUri=$IMAGE_URI \
@@ -147,7 +147,7 @@ jobs:
              sudo apt-get update && sudo apt-get install -y jq
           fi
 
-          STACK_OUTPUTS=$(aws cloudformation describe-stacks --stack-name brbad-staging-stack --query "Stacks[0].Outputs" --region us-east-1 --output json)
+          STACK_OUTPUTS=$(aws cloudformation describe-stacks --stack-name brkbad-staging-stack --query "Stacks[0].Outputs" --region us-east-1 --output json)
           echo "Raw Stack Outputs: $STACK_OUTPUTS" # Log para depuración
 
           # Extraer la URL del ALB (ALBDnsName)
@@ -235,8 +235,8 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     outputs: # Definir salida para la URL del ALB de producción
       alb_url_prod: ${{ steps.get_stack_outputs.outputs.alb_url }}
-      cluster_name_prod: 'brbad-production-cluster'
-      service_name_prod: 'brbad-production-service'
+      cluster_name_prod: 'brkbad-production-cluster'
+      service_name_prod: 'brkbad-production-service'
 
     steps:
       # 1. Checkout del código
@@ -261,7 +261,7 @@ jobs:
 
           aws cloudformation deploy \
             --template-file template.yaml \
-            --stack-name brbad-prod-stack \
+            --stack-name brkbad-prod-stack \
             --parameter-overrides \
               EnvironmentName=production \
               DockerImageUri=$IMAGE_URI \
@@ -280,7 +280,7 @@ jobs:
              sudo apt-get update && sudo apt-get install -y jq
           fi
 
-          STACK_OUTPUTS=$(aws cloudformation describe-stacks --stack-name brbad-prod-stack --query "Stacks[0].Outputs" --region us-east-1 --output json)
+          STACK_OUTPUTS=$(aws cloudformation describe-stacks --stack-name brkbad-prod-stack --query "Stacks[0].Outputs" --region us-east-1 --output json)
           echo "Raw Stack Outputs: $STACK_OUTPUTS" # Log
 
           # Extraer la URL del ALB (ALBDnsName)
@@ -399,7 +399,7 @@ jobs:
           # Desplegar la versión anterior usando CloudFormation
           aws cloudformation deploy \
             --template-file template.yaml \
-            --stack-name brbad-prod-stack \
+            --stack-name brkbad-prod-stack \
             --parameter-overrides \
               EnvironmentName=production \
               DockerImageUri=$IMAGE_URI \

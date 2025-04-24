@@ -26,7 +26,7 @@ Resources:
   ECSLogGroup:
     Type: AWS::Logs::LogGroup
     Properties:
-      LogGroupName: !Sub '/ecs/brbad-${EnvironmentName}-task'
+      LogGroupName: !Sub '/ecs/brkbad-${EnvironmentName}-task'
       RetentionInDays: 7 # Retener logs por 7 días (ajusta si es necesario)
       Tags:
         - Key: Environment
@@ -36,7 +36,7 @@ Resources:
   ECSCluster:
     Type: AWS::ECS::Cluster
     Properties:
-      ClusterName: !Sub 'brbad-${EnvironmentName}-cluster'
+      ClusterName: !Sub 'brkbad-${EnvironmentName}-cluster'
       Tags:
         - Key: Environment
           Value: !Ref EnvironmentName
@@ -78,7 +78,7 @@ Resources:
   ApplicationLoadBalancer:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
-      Name: !Sub 'brbad-${EnvironmentName}-alb'
+      Name: !Sub 'brkbad-${EnvironmentName}-alb'
       Subnets: !Ref SubnetIds # Debe estar en subredes publicas
       SecurityGroups:
         - !Ref ALBSecurityGroup
@@ -129,7 +129,7 @@ Resources:
     Type: AWS::ECS::TaskDefinition
     DependsOn: ECSLogGroup # Asegura que el Log Group exista primero
     Properties:
-      Family: !Sub 'brbad-${EnvironmentName}-task'
+      Family: !Sub 'brkbad-${EnvironmentName}-task'
       RequiresCompatibilities:
         - FARGATE
       NetworkMode: awsvpc
@@ -138,7 +138,7 @@ Resources:
       TaskRoleArn: !Ref LabRoleArn # Rol para permisos DENTRO del contenedor (si necesita llamar a otros servicios AWS)
       ExecutionRoleArn: !Ref LabRoleArn # Rol para que ECS/Fargate pueda descargar imagen, enviar logs, etc.
       ContainerDefinitions:
-        - Name: !Sub 'brbad-${EnvironmentName}-container'
+        - Name: !Sub 'brkbad-${EnvironmentName}-container'
           Image: !Ref DockerImageUri # Imagen de Docker Hub
           PortMappings:
             - ContainerPort: 8000
@@ -158,7 +158,7 @@ Resources:
   ECSService:
     Type: AWS::ECS::Service
     Properties:
-      ServiceName: !Sub 'brbad-${EnvironmentName}-service'
+      ServiceName: !Sub 'brkbad-${EnvironmentName}-service'
       Cluster: !Ref ECSCluster
       TaskDefinition: !Ref ECSTaskDefinition
       DesiredCount: 1 # Numero inicial de tareas
@@ -170,7 +170,7 @@ Resources:
           SecurityGroups:
             - !Ref ECSServiceSecurityGroup
       LoadBalancers:
-        - ContainerName: !Sub 'brbad-${EnvironmentName}-container'
+        - ContainerName: !Sub 'brkbad-${EnvironmentName}-container'
           ContainerPort: 8000
           TargetGroupArn: !Ref ECSTargetGroup
       # DesiredCount y TaskDefinition se actualizan en despliegues posteriores
