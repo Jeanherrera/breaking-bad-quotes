@@ -19,6 +19,7 @@ jobs:
       repo_name: ${{ steps.set_outputs.outputs.repo_name }}
       image_tag: ${{ steps.set_outputs.outputs.image_tag }}
 
+    steps:
       - uses: actions/checkout@v3
 
       - uses: actions/setup-node@v4
@@ -92,7 +93,6 @@ jobs:
           echo "repo_name=${{ github.event.repository.name }}" >> $GITHUB_OUTPUT
           echo "image_tag=${{ github.sha }}" >> $GITHUB_OUTPUT
 
-
   # -------------------------------------
   # Job de Despliegue CloudFormation Staging
   # -------------------------------------
@@ -102,8 +102,8 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main' # Solo en push a main
     outputs:
       alb_url_staging: ${{ steps.get_stack_outputs.outputs.alb_url }}
-      cluster_name_staging: "brbad-staging-cluster"
-      service_name_staging: "brbad-staging-service"
+      cluster_name_staging: 'brbad-staging-cluster'
+      service_name_staging: 'brbad-staging-service'
 
     steps:
       # 1. Checkout del código (para acceder a template.yaml)
@@ -235,8 +235,8 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     outputs: # Definir salida para la URL del ALB de producción
       alb_url_prod: ${{ steps.get_stack_outputs.outputs.alb_url }}
-      cluster_name_prod: "brbad-production-cluster"
-      service_name_prod: "brbad-production-service"
+      cluster_name_prod: 'brbad-production-cluster'
+      service_name_prod: 'brbad-production-service'
 
     steps:
       # 1. Checkout del código
@@ -357,4 +357,3 @@ jobs:
           npm run dev &
           npx wait-on http://localhost:5173
           npm run smoke
-
