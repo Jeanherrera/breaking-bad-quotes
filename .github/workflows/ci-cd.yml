@@ -394,18 +394,15 @@ jobs:
           echo "Rolling back to Image URI: $IMAGE_URI"
 
           aws cloudformation deploy \
-            --template-file .aws/prod/template.yml \
-            --stack-name ${{ env.CLOUDFORMATION_STACK_NAME_PROD }} \
-            --capabilities CAPABILITY_NAMED_IAM \
+            --template-file template.yaml \
+            --stack-name brbad-prod-stack \
             --parameter-overrides \
-              Environment=prod \
-              ImageUrl=$IMAGE_URI \
-              ContainerName=${{ github.event.repository.name }} \
+              EnvironmentName=production \
+              DockerImageUri=$IMAGE_URI \
+              LabRoleArn=${{ secrets.LAB_ROLE_ARN }} \
               VpcId=${{ secrets.VPC_ID }} \
-              SubnetIds=\"${{ secrets.SUBNET_IDS }}\" \
-              AlbListenerArn=${{ secrets.ALB_LISTENER_ARN }} \
-              ClusterName=${{ secrets.ECS_CLUSTER_NAME }} \
-              ServiceName=${{ secrets.ECS_SERVICE_NAME_PROD }}
+              SubnetIds="${{ secrets.SUBNET_IDS }}" \
+            --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM
 
       - name: Verify Rollback
         run: |
