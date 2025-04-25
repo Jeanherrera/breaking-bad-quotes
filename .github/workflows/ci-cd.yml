@@ -82,6 +82,7 @@ jobs:
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:${{ github.sha }}
             ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:previous
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -380,20 +381,11 @@ jobs:
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           aws-region: us-east-1
 
-      # 3. Obtener el tag de la imagen anterior
-      - name: Get Previous Image Tag
-        id: get_previous_tag
-        run: |
-          # Obtener el commit anterior
-          PREVIOUS_COMMIT=$(git rev-parse HEAD~1)
-          echo "Previous commit: $PREVIOUS_COMMIT"
-          echo "previous_commit=$PREVIOUS_COMMIT" >> $GITHUB_OUTPUT
-
       # 4. Desplegar la versión anterior
       - name: Deploy Previous Version
         run: |
           # Reconstruir la URI de la imagen anterior
-          IMAGE_URI="${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:${{ steps.get_previous_tag.outputs.previous_commit }}"
+          IMAGE_URI="${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:previous"
           echo "Rolling back to Image URI: $IMAGE_URI"
 
           # Desplegar la versión anterior usando CloudFormation
