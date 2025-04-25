@@ -17,7 +17,7 @@ async function runSmokeTests() {
   try {
     // Test 1: Application loads successfully
     console.log('Test 1: Verifying application loads...');
-    await driver.get(process.env.APP_BASE_URL + '/non-existent-page');
+    await driver.get(process.env.APP_BASE_URL);
     console.log('✓ Application loaded successfully');
 
     // Test 2: Main components are present
