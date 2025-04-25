@@ -362,7 +362,7 @@ jobs:
   # Job de Rollback en caso de fallo de pruebas de humo
   # -------------------------------------
   rollback-prod:
-    needs: smoke-test-prod
+    needs: [smoke-test-prod, deploy-cfn-prod]
     runs-on: ubuntu-latest
     if: failure() && github.event_name == 'push' && github.ref == 'refs/heads/main'
 
@@ -403,15 +403,18 @@ jobs:
       - name: Force New Deployment with Previous Version
         run: |
           echo "Forcing new deployment with previous version..."
-          aws ecs update-service --cluster ${{ needs.deploy-cfn-prod.outputs.cluster_name_prod }} \
-                                --service ${{ needs.deploy-cfn-prod.outputs.service_name_prod }} \
-                                --force-new-deployment \
-                                --region us-east-1
+          aws ecs update-service \
+            --cluster ${{ needs.deploy-cfn-prod.outputs.cluster_name_prod }} \
+            --service ${{ needs.deploy-cfn-prod.outputs.service_name_prod }} \
+            --force-new-deployment \
+            --region us-east-1
 
           echo "Waiting for rollback deployment to stabilize..."
-          aws ecs wait services-stable --cluster ${{ needs.deploy-cfn-prod.outputs.cluster_name_prod }} \
-                                      --services ${{ needs.deploy-cfn-prod.outputs.service_name_prod }} \
-                                      --region us-east-1
+          aws ecs wait services-stable \
+            --cluster ${{ needs.deploy-cfn-prod.outputs.cluster_name_prod }} \
+            --services ${{ needs.deploy-cfn-prod.outputs.service_name_prod }} \
+            --region us-east-1
+            
           echo "Rollback deployment stable."
 
       # 6. Verificar que el rollback fue exitoso
